@@ -7,6 +7,15 @@ export default class TextInput extends Input {
     private _helpText: string = $state("");
     private _limit: number = $state(524288);
     private _defaultValue: string = $state("");
+    private _id: string = $state("");
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
+    }
 
 
     get required(): boolean {

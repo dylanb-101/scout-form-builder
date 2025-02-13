@@ -17,8 +17,8 @@
 
 </script>
 
-<NumberInputComponent val={input.defaultValue} title="Default Value:"></NumberInputComponent>
-<NumberInputComponent val={input.min} title="Min:"></NumberInputComponent>
-<NumberInputComponent val={input.max} title="Max:"></NumberInputComponent>
-<SwitchInput val={input.autoIncrement} title="Auto Increment:"></SwitchInput>
+<NumberInputComponent bind:val={input.defaultValue} title="Default Value:"></NumberInputComponent>
+<NumberInputComponent bind:val={input.min} title="Min:"></NumberInputComponent>
+<NumberInputComponent bind:val={input.max} title="Max:"></NumberInputComponent>
+<SwitchInput bind:val={input.autoIncrement} title="Auto Increment:"></SwitchInput>
 

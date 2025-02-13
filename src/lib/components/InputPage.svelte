@@ -19,9 +19,9 @@
 <div class="w-11/12 bg-gray-500 rounded-lg p-4 text-white flex flex-col">
 
     <div class="">
-        <TextInput val={page.name} title="Page Name:"></TextInput>
-        <TextInput val={page.footerHelpText} title="Footer Help Text:"></TextInput>
-        <TextInput val={page.footerText} title="Footer Text:"></TextInput>
+        <TextInput bind:val={page.name} title="Page Name:"></TextInput>
+        <TextInput bind:val={page.footerHelpText} title="Footer Help Text:"></TextInput>
+        <TextInput bind:val={page.footerText} title="Footer Text:"></TextInput>
     </div>
 
 
@@ -31,8 +31,5 @@
     {/each}
 
     <Button text="Add Section" click={() => {page.addSection(new PageSection())}}></Button>
-
-
-
 
 </div>

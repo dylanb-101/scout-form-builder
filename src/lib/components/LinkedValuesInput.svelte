@@ -3,9 +3,7 @@
     import TextInput from "./TextInput.svelte";
 
 
-    let { title, val = $bindable([{text: "Option 1", value: 0}]) }: { title: string, val: { text: string, value: any}[] } = $props();
-
-    
+    let { title, val = $bindable([]) }: { title: string, val: { text: string, value: any}[] } = $props();
     
 
 </script>

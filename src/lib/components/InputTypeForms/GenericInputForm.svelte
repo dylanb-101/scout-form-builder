@@ -26,14 +26,14 @@
 
 <div class="flex flex-col">
 
-    <TextInputComponent val={input.questionText} title="Question Text:"></TextInputComponent>
-    <TextInputComponent val={input.helpText} title="Help Text:"></TextInputComponent>
-    <SwitchInput val={input.required} title="Required:"></SwitchInput>
+    <TextInputComponent bind:val={input.questionText} title="Question Text:"></TextInputComponent>
+    <TextInputComponent bind:val={input.helpText} title="Help Text:"></TextInputComponent>
+    <TextInputComponent bind:val={input.id} title="Input ID:"></TextInputComponent>
+    <SwitchInput bind:val={input.required} title="Required:"></SwitchInput>
     
 
     
     {#if input instanceof TextInput}
-        im a text input
         <TextInputForm input={input}></TextInputForm>
 
     {:else if input instanceof IncrementalNumberInput}

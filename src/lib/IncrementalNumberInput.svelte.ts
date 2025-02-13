@@ -1,12 +1,22 @@
-import type Input from "./Input";
+import Input from "./Input";
 
-export default class IncrementalNumberInput implements Input {
+export default class IncrementalNumberInput extends Input {
     private _required: boolean = $state(false);
     private _questionText: string = $state("New Incremnetal Number");
     private _helpText: string = $state("");
     private _defaultValue: number = $state(0);
     private _min: number = $state(0);
     private _max: number = $state(100);
+    private _id: string = $state("");
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
+    }
+
 
     get required(): boolean {
         return this._required;

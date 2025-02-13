@@ -5,6 +5,7 @@
     import TextInput from "./TextInput.svelte";
     import Input from "$lib/Input";
     import Group from "$lib/Group.svelte";
+    import GroupSection from "./GroupSection.svelte";
 
 
     let { section }: { section: PageSection } = $props();
@@ -20,27 +21,33 @@
 </script>
 
 
-<div class="flex flex-col">
+<div class="flex flex-col bg-slate-400 p-4 rounded-md m-2">
 
     <div>
-        <TextInput val={section.header} title="Header Text:"></TextInput>
-        <TextInput val={section.helpText} title="Help Text:"></TextInput>
+        <TextInput bind:val={section.header} title="Header Text:"></TextInput>
+        <TextInput bind:val={section.helpText} title="Help Text:"></TextInput>
     </div>
 
+    <div class="flex gap-2 flex-wrap">
+
     {#each section.elements as element}
-        
-        {#if (element instanceof Input)}
-        <p>hi!</p>
-            <GenericInputForm input={(element as Input)}></GenericInputForm>
+        <div class="flex bg-slate-600 p-2 rounded-sm m-2 flex-wrap">
 
-        {:else if element instanceof Group}
-            <p>groups soon!</p>
+            {#if (element instanceof Input)}
+                <GenericInputForm input={(element as Input)}></GenericInputForm>
+            
+            {:else if element instanceof Group}
 
-        {/if}
+                <GroupSection group={element}></GroupSection>
+            
+            {/if}
+        </div>
 
     {/each}
+</div>
 
-    <NewFormOption checked={checked} type={type} confirm={() => {section.addElement(type, checked)}}></NewFormOption>
+
+    <NewFormOption bind:checked={checked} bind:type={type} confirm={() => {section.addElement(type, checked)}}></NewFormOption>
 
 </div>
 

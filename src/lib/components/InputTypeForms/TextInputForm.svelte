@@ -13,8 +13,8 @@
 
 </script>
 
-<TextInputComponent val={input.defaultValue} title="Default Value:"></TextInputComponent>
-<NumberInput val={input.limit} title="Max Length:"></NumberInput>
+<TextInputComponent bind:val={input.defaultValue} title="Default Value:"></TextInputComponent>
+<NumberInput bind:val={input.limit} title="Max Length:"></NumberInput>
 
 
 

@@ -1,12 +1,20 @@
-import type Input from "./Input";
+import Input from "./Input";
 
-export default class ToggleInput implements Input {
+export default class ToggleInput extends Input {
 
     private _required: boolean = $state(false);
     private _questionText: string = $state("");
     private _helpText: string = $state("Toggle Input");
     private _defaultValue: boolean = $state(false);
+    private _id: string = $state("");
 
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
+    }
 
     get required(): boolean {
         return this._required;

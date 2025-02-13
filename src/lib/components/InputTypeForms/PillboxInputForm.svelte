@@ -6,12 +6,13 @@
     import type PillboxInput from "$lib/PillboxInput.svelte";
     import RadioInput from "../RadioInput.svelte";
     import LinkedValuesInput from "../LinkedValuesInput.svelte";
+    import ConfirmButton from "$lib/ConfirmButton.svelte";
 
 
 
     let { input }: { input: PillboxInput } = $props();
 
-    let inputs: {text: string, value: any}[] = $state([]);
+    let inputs: {text: string, value: any}[] = $state([{text: "Option 1", value: 0}]);
 
     $effect(() => {
         input.updateOptions(inputs);
@@ -25,7 +26,8 @@
 
 </script>
 
-<RadioInput val={input.orientation} title="PillBox Orientation:" options={["Horizontal", "Vertical"]}></RadioInput>
-<LinkedValuesInput val={inputs} title="PillBox Options:"></LinkedValuesInput>
+<RadioInput bind:val={input.orientation} title="PillBox Orientation:" options={["Horizontal", "Vertical"]}></RadioInput>
+<LinkedValuesInput bind:val={inputs} title="PillBox Options:"></LinkedValuesInput>
+<ConfirmButton text="Add Option" click={() => {inputs.push({text: "", value: ""})}}></ConfirmButton>
 
 

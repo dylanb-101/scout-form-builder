@@ -11,5 +11,7 @@ export default abstract class Input {
 
     public abstract get defaultValue(): any;
     public abstract set defaultValue(value: any);
+
+    public abstract get id(): string;
+    public abstract set id(valie: string);
 }
-    

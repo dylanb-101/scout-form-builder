@@ -13,7 +13,8 @@ export default class PillboxInput extends Input {
     private _values: any[] = $state([]);
     private _orientation: PillBoxOrientation = $state(0)
     private _defaultValue: any = $state(this._values[0])
-
+    private _id: string = $state("");
+    
     addOption(displayText: string, value: any) {
         this.options.push(displayText);
         this.values.push(value);
@@ -32,6 +33,14 @@ export default class PillboxInput extends Input {
     }
 
     // getters and setters
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(value: string) {
+        this._id = value;
+    }
 
     get required(): boolean {
         return this._required;

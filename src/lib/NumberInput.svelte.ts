@@ -1,6 +1,6 @@
-import type Input from "./Input";
+import Input from "./Input";
 
-export default class NumberInput implements Input {
+export default class NumberInput extends Input {
 
     private _required: boolean = $state(false);
     private _questionText: string = $state("New Number Input!");
@@ -10,6 +10,15 @@ export default class NumberInput implements Input {
     /**Whether the number should increase by one every time the form is submitted */
     private _autoIncrement: boolean = $state(false);
     private _defaultValue: number = $state(0);
+    private _id: string = $state("");
+
+    get id(): string {
+        return this._id;
+    }
+
+    set id(id: string) {
+        this._id = id;
+    }
 
     get required(): boolean {
         return this._required;

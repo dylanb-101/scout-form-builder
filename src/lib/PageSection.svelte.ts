@@ -30,26 +30,20 @@ export default class PageSection {
 
         let input: Input;
 
-        switch(type) {
-            case(backendFormOptions.TEXT): {
-                input = new TextInput();
-            }
-            case(backendFormOptions.NUM): {
-                input = new NumberInput();
-            }
-            case(backendFormOptions.INC_NUM): {
-                input = new IncrementalNumberInput();
-            }
-            case(backendFormOptions.PILL): {
-                input = new PillboxInput();
-            }
-            case(backendFormOptions.TOGGLE): {
-                input = new ToggleInput();
-            }
-            default: {
-                input = new TextInput();
-            }
+        if(type == backendFormOptions.TEXT) {
+            input = new TextInput();
+        } else if(type == backendFormOptions.NUM) {
+            input = new NumberInput();
+         } else if(type == backendFormOptions.INC_NUM) {
+            input = new IncrementalNumberInput();
+        } else if(type == backendFormOptions.PILL) {
+            input = new PillboxInput();
+        } else if(type == backendFormOptions.TOGGLE) {
+            input = new ToggleInput();
+        } else {
+            input = new TextInput();
         }
+        
 
         if(group) {
             group.addInput(input);

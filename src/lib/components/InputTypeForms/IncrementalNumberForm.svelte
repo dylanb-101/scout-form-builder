@@ -14,9 +14,9 @@
 
 </script>
 
-<NumberInput val={input.defaultValue} title="Default Value:"></NumberInput>
-<NumberInput val={input.min} title="Min:"></NumberInput>
-<NumberInput val={input.max} title="Max:"></NumberInput>
+<NumberInput bind:val={input.defaultValue} title="Default Value:"></NumberInput>
+<NumberInput bind:val={input.min} title="Min:"></NumberInput>
+<NumberInput bind:val={input.max} title="Max:"></NumberInput>
 
 
 
