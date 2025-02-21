@@ -16,19 +16,20 @@ export const GET: RequestHandler = async ({ params, url }) => {
 
     let connection = await mysqlConnection();
 
-    let _rows: Form;
+    let _rows: any;
 
     let req = await connection
-    .query(`SELECT * FROM forms WHERE uid = ${id} LIMIT 1`)
+    .query(`SELECT * FROM forms WHERE uid = ${id || -1} LIMIT 1`)
     .then(([rows, fields]) => {
 
-        
+        _rows = rows;
 
-        return new Response(JSON.stringify(rows));
     })
     .catch((reason) => {
-        error(400, reason);
+        error(401, reason) + "!";
     });
+
+    return new Response(JSON.stringify(_rows));
 
 
 }
