@@ -3,6 +3,12 @@ import CREDS from "$lib/server/db.json";
 
 let connection: Promise<mysql.Connection> | null = null;
 
+let pool: mysql.Pool | null = null;
+
+/**
+ * @deprecated
+ *  pool connection instead
+ */
 export function mysqlConnection() {
 
     if(!connection) {
@@ -17,5 +23,21 @@ export function mysqlConnection() {
     }
 
     return connection;
+
+}
+
+export function poolConnection(): mysql.Pool {
+
+    if(!pool) {
+        pool = mysql.createPool({
+            database: CREDS.databse,
+            host: CREDS.host,
+            user: CREDS.user,
+            password: CREDS.password,
+            connectionLimit: 20
+        });
+    }
+
+    return pool;
 
 }

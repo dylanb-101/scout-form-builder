@@ -1,5 +1,5 @@
 import { error, json, type RequestHandler } from "@sveltejs/kit";
-import { mysqlConnection } from "$lib/server/mysql";
+import { poolConnection } from "$lib/server/mysql";
 import type { QueryResult } from "mysql2";
 import { stringify } from "querystring";
 
@@ -14,7 +14,7 @@ export const GET: RequestHandler = async ({ params, url }) => {
     const id = params.id;
 
 
-    let connection = await mysqlConnection();
+    let connection = poolConnection();
 
     let _rows: any;
 

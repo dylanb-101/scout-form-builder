@@ -1,6 +1,5 @@
 import { error, json, text, type RequestHandler } from "@sveltejs/kit";
-import { mysqlConnection } from "$lib/server/mysql";
-import type { QueryResult } from "mysql2";
+import { poolConnection } from "$lib/server/mysql";
 
 // let connection = await mysqlConnection()
 
@@ -8,7 +7,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
     let limit = url.searchParams.get("limit") || 100;
 
-    let connection = await mysqlConnection();
+    let connection = poolConnection();
 
     let _rows: any;
 
@@ -22,10 +21,8 @@ export const GET: RequestHandler = async ({ url }) => {
     .catch((reason) => {
         error(400, reason);
     });
-
     
     return new Response(JSON.stringify(_rows));
-
 
 }
 
@@ -34,7 +31,7 @@ export const POST: RequestHandler = async ({ request }) => {
     const { name, active }: {name: string, active: boolean} = await request.json();
 
 
-    let connection = await mysqlConnection();
+    let connection = poolConnection();
 
     let res: any;
 
@@ -50,6 +47,7 @@ export const POST: RequestHandler = async ({ request }) => {
     .catch((e) => {
         error(e);
     })
+    
     
 
     return new Response(JSON.stringify({ uid: res.insertId }));
@@ -70,7 +68,7 @@ export const PUT: RequestHandler = async ({ request }) => {
     }
 
 
-    let connection = await mysqlConnection();
+    let connection = await poolConnection();
 
     // console.log(connection)
 
