@@ -1,5 +1,5 @@
 node_modules
-/src/server/db.json.ts
+/src/lib/server/db.json.ts
 
 # Output
 .output
