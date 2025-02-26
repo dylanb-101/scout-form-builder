@@ -8,6 +8,17 @@ export default class ToggleInput extends Input {
     private _defaultValue: boolean = $state(false);
     private _id: string = $state("");
 
+    public exportDataForDatabase() {
+        return {
+            inputType: "toggle",
+            required: this.required,
+            questionText: this.questionText,
+            helpText: this.helpText,
+            defaultValue: this.defaultValue,
+            cssId: this.id
+        }
+    }
+
     get id(): string {
         return this._id;
     }

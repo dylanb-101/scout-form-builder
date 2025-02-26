@@ -9,6 +9,19 @@ export default class IncrementalNumberInput extends Input {
     private _max: number = $state(100);
     private _id: string = $state("");
 
+    public exportDataForDatabase() {
+        return {
+            inputType: "incrementalNumber",
+            required: this.required,
+            questionText: this.questionText,
+            helpText: this.helpText,
+            defaultValue: this.defaultValue,
+            cssId: this.id,
+            numMix: this.min,
+            numMax: this.max
+        }
+    }
+
     get id(): string {
         return this._id;
     }

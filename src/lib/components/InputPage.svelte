@@ -5,8 +5,8 @@
     import PageSectionDisplay from "./PageSection.svelte";
     import TextInput from "./TextInput.svelte";
     import PageSection from "$lib/PageSection.svelte";
+    import SwitchInput from "./SwitchInput.svelte";
     let { page }: { page: InputPage } = $props();
-
 
     // inputs to do 
     // sections - DONE
@@ -22,6 +22,9 @@
         <TextInput bind:val={page.name} title="Page Name:"></TextInput>
         <TextInput bind:val={page.footerHelpText} title="Footer Help Text:"></TextInput>
         <TextInput bind:val={page.footerText} title="Footer Text:"></TextInput>
+        <SwitchInput title="Cancel Button" bind:val={page.footerButtons.cancel}/>
+        <SwitchInput title="Submit Button" bind:val={page.footerButtons.submit}/>
+        <SwitchInput title="Next Button" bind:val={page.footerButtons.next}/>
     </div>
 
 

@@ -14,6 +14,20 @@ export default class PillboxInput extends Input {
     private _orientation: PillBoxOrientation = $state(0)
     private _defaultValue: any = $state(this._values[0])
     private _id: string = $state("");
+
+    public exportDataForDatabase() {
+        return {
+            inputType: "pillbox",
+            required: this.required,
+            questionText: this.questionText,
+            helpText: this.helpText,
+            defaultValue: this.defaultValue,
+            cssId: this.id,
+            pillBoxOptions: this.options.toString(),
+            pillboxValues: this.values.toString(),
+            pillBoxOrientation: this.orientation
+        }
+    }
     
     addOption(displayText: string, value: any) {
         this.options.push(displayText);

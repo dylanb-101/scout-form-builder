@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
 export const POST: RequestHandler = async ({ request }) => {
 
-    const { name, active }: {name: string, active: boolean} = await request.json();
+    const { name, active, csvOrder }: {name: string, active: boolean, csvOrder: string} = await request.json();
 
 
     let connection = poolConnection();
@@ -36,7 +36,7 @@ export const POST: RequestHandler = async ({ request }) => {
     let res: any;
 
     let req = await connection
-    .query(`INSERT INTO forms (name,active) VALUES ("${name}",${active})`)
+    .query(`INSERT INTO forms (name,active,csv_order) VALUES ("${name}",${active},"${csvOrder}")`)
     .then(([rows, fields]) => {
 
         console.log(rows);
@@ -56,7 +56,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 export const PUT: RequestHandler = async ({ request }) => {
 
-    const { uid, name, active }: {uid: number, name: string, active: boolean} = await request.json();
+    const { uid, name, active, csvOrder }: {uid: number, name: string, active: boolean, csvOrder: string} = await request.json();
 
     
 
@@ -68,13 +68,10 @@ export const PUT: RequestHandler = async ({ request }) => {
     }
 
 
-    let connection = await poolConnection();
+    let connection = poolConnection();
 
-    // console.log(connection)
 
-    let [result, fields] = await connection.query(`UPDATE \`forms\` SET \`name\`="${name}", \`active\`=${active} WHERE \`uid\`=${uid} LIMIT 1`);
-
-    console.log(JSON.stringify(fields) + "!!")
+    let [result, fields] = await connection.query(`UPDATE \`forms\` SET \`name\`="${name}", \`active\`=${active}, \`csv_order\`="${csvOrder}" WHERE \`uid\`=${uid} LIMIT 1`);
 
     return new Response(JSON.stringify(result));
 

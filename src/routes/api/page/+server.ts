@@ -40,7 +40,7 @@ export const POST: RequestHandler = async ({ request }) => {
     
     console.log(fields)
 
-    return new Response(JSON.stringify({uid: (result as any).insertId}));
+    return new Response(JSON.stringify(result));
 
 }
 

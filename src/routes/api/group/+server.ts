@@ -43,10 +43,9 @@ export const POST: RequestHandler = async ({ request }) => {
     let [result, fields] = await connection.query(`
         INSERT INTO \`groups\` 
         (\`form_id\`, \`page_id\`, \`img\`, \`title\`, \`help_text\`) VALUES (${formId}, ${pageId}, "${img}", "${title}", "${helpText}")`);
-    
-    console.log(fields)
 
-    return new Response(JSON.stringify({uid: (result as any).insertId}));
+
+    return new Response(JSON.stringify(result));
 
 }
 

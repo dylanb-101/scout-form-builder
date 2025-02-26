@@ -14,4 +14,6 @@ export default abstract class Input {
 
     public abstract get id(): string;
     public abstract set id(valie: string);
+
+    public abstract exportDataForDatabase(): any;
 }

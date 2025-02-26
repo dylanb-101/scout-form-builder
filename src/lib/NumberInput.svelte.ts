@@ -12,6 +12,20 @@ export default class NumberInput extends Input {
     private _defaultValue: number = $state(0);
     private _id: string = $state("");
 
+    public exportDataForDatabase() {
+        return {
+            inputType: "number",
+            required: this.required,
+            questionText: this.questionText,
+            helpText: this.helpText,
+            defaultValue: this.defaultValue,
+            cssId: this.id,
+            numMix: this.min,
+            numMax: this.max,
+            numIncrement: this.autoIncrement
+        }
+    }
+
     get id(): string {
         return this._id;
     }

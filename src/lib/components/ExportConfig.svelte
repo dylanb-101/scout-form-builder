@@ -1,12 +1,15 @@
 <script lang="ts">
     import type { Row } from "$lib";
     import type App from "$lib/App.svelte";
+    import Button from "./Button.svelte";
 
 
     let { app }: { app: App } = $props();
 
 
-    let rows: Row[] = $state(app.convertInputsToRows());
+    // let rows: Row[] = $state(app.convertInputsToRows());
+
+    app.rows = app.convertInputsToRows();
 
     let selectedRow = $state(0);
 
@@ -29,37 +32,53 @@
 
         if(e.key == "ArrowDown") {
 
-            if(selectedRow  >= rows.length-1) return;
-            rows[selectedRow+1].index -=1;
-            rows[selectedRow].index += 1;
+            if(selectedRow  >= app.rows.length-1) return;
+            app.rows[selectedRow+1].index -=1;
+            app.rows[selectedRow].index += 1;
             selectedRow+=1
 
-            rows.sort((a, b) => a.index-b.index);
+            app.rows.sort((a, b) => a.index-b.index);
 
         } else if(e.key == "ArrowUp") {
 
             if(selectedRow <= 0) return;
-            rows[selectedRow-1].index += 1;
-            rows[selectedRow].index -=1;
+            app.rows[selectedRow-1].index += 1;
+            app.rows[selectedRow].index -=1;
             selectedRow -= 1;
 
-            rows.sort((a, b) => a.index-b.index)
+            app.rows.sort((a, b) => a.index-b.index)
 
         }
 
     }
 
-    
+    let implicitCSVOptions: string[] = [ "user_id", "comp", "timestamp", "team_num", "user_name"];
+
+    let option = $state("user_id");
+
+    function addOption() {
+        app.rows.push({index: app.rows.length, id: option, type: "string"})
+    }
 
     
 
 </script>
 
+<select bind:value={option}>
+    {#each implicitCSVOptions as opt}
+        <option value="{opt}">{opt}</option>
+    {/each}
+</select>
+
+<Button click={() => {addOption()}} text="Add Implicit Value"/>
+
+
+
 <table class="bg-slate-100">
 
     <thead>
         <tr>
-            {#each Object.keys(rows[0]) as key}
+            {#each Object.keys(app.rows[0]) as key}
                 <th>{key}</th>
             {/each}
         </tr>
@@ -67,7 +86,7 @@
 
     <tbody>
 
-        {#each rows as row, i}
+        {#each app.rows as row, i}
             
             <tr onclick={(e) => {click(e, i)}} class={i == selectedRow ? "bg-gray-500" : ""}>
                 {#each Object.values(row) as val}
@@ -80,5 +99,7 @@
     </tbody>
 
 </table>
+
+<Button text="Finish & Activate Form" click={() => {app.uploadForm()}}/>
 
 <svelte:window onkeydown={(e) => {keyPress(e)}}/>

@@ -41,13 +41,11 @@ export const POST: RequestHandler = async ({ request }) => {
     let res: any;
 
     let [result, fields] = await connection.query(`
-        INSERT INTO \`inputs\` 
-        (\`input_type\`, \`form_id\`, \`page_index\`, \`group_id\`, \`page_id\`, \`section_index\`, \`required\`, \`question_text\`, \`help_text\`, \`default_value\`, \`css_id\`, \`text_limit\`, \`pillbox_options\`, \`pillbox_values\`, \`pillbox_orientation\`, \`num_min\`, \`num_max\`, \`num_increment\`) VALUES 
-        ("${params.inputType}", ${params.formId}, ${params.pageIndex}, ${params.groupId || -1}, ${params.pageId}, ${params.sectionIndex}, ${params.requried}, "${params.questionText}", "${params.helpText || ''}", "${params.defaultValue}", "${params.cssId || ""}", ${params.textLimit || ""}, "${params.pillBoxOptions || ""}", "${params.pillboxValues || ""}", ${params.pillBoxOrientation || ""}, ${params.numMin || ""}, ${params.numMax || ""}, ${params.numIncrement || 0})`);
+        INSERT INTO \`inputs\` (\`input_type\`, \`form_id\`, \`page_index\`, \`group_id\`, \`page_id\`, \`section_index\`, \`required\`, \`question_text\`, \`help_text\`, \`default_value\`, \`css_id\`, \`text_limit\`, \`pillbox_options\`, \`pillbox_values\`, \`pillbox_orientation\`, \`num_min\`, \`num_max\`, \`num_increment\`) VALUES ("${params.inputType}", ${params.formId}, ${params.pageIndex}, ${params.groupId || -1}, ${params.pageId}, ${params.sectionIndex}, ${params.requried || 0}, "${params.questionText}", "${params.helpText || ''}", "${params.defaultValue}", "${params.cssId || ""}", ${params.textLimit || 0}, "${params.pillBoxOptions || ""}", "${params.pillboxValues || ""}", ${params.pillBoxOrientation || 0}, ${params.numMin || 0}, ${params.numMax || 0}, ${params.numIncrement || 0})`);
     
     console.log(fields)
 
-    return new Response(JSON.stringify({uid: (result as any).insertId}));
+    return new Response(JSON.stringify(result));
 
 }
 

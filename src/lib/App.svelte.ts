@@ -12,11 +12,203 @@ export default class App {
 
     inputChecked: boolean = $state(false);
     inputTypeValue: string = $state("text");
+    name: string = $state("new form!");
+    rows: Row[] = $state([]);
 
     pages: InputPage[] = $state([]);
 
     addPage(page: InputPage): void {
         this.pages.push(page);
+    }
+
+    async request(path: string, method: string, body?: string): Promise<any> {
+
+        let req = await fetch(path, {
+            method, 
+            body: body,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        let res = await req.json();
+
+        return res;
+
+    }
+
+    async uploadForm() {
+
+        let inputs: {id: string, uid: number}[] = [];
+
+        let formReq = await this.request("/api/form", "POST", JSON.stringify({
+            name: this.name,
+            active: false,
+            csvOrder: ""
+        }));
+
+        const formId: number = formReq.uid;
+
+        console.log(formReq)
+
+
+        for(let page of this.pages) {
+
+            let pageReq = await this.request("/api/page", "POST", JSON.stringify({
+                formId, 
+                name: page.name,
+                footerText: page.footerText,
+                footerHelpText: page.footerHelpText,
+                footerButtons: page.parseFooterButtons(),
+                sectionNames: page.sectionNames(),
+                sectionHelpTexts: page.sectionHelpTexts()
+            }));
+
+            console.log(pageReq);
+
+            const pageId: number = pageReq.insertId;
+
+            let pageIndex = 0;
+
+            for(let i = 0; i < page.sections.length; i++) {
+
+                let section = page.sections[i];
+
+                for(let element of section.elements) {
+
+                    let groupId = -1;
+
+                    if(element instanceof Group) {
+
+                        let groupReq = await this.request("/api/group", "POST", JSON.stringify({
+                            formId,
+                            pageId,
+                            img: element.img,
+                            title: element.title,
+                            helpText: element.helpText
+                        }));
+                        
+                        groupId = groupReq.insertId;
+
+                        for(let input of element.inputs) {
+
+                            let data = input.exportDataForDatabase();
+
+                            data.formId = formId;
+                            data.pageIndex = pageIndex++;
+                            data.groupId = groupId;
+                            data.pageId = pageId;
+                            data.sectionIndex = i;
+
+                            let inputReq = await this.request("/api/input", "POST", JSON.stringify(data));
+
+                            inputs.push({id: input.id, uid: inputReq.insertId});
+                        }
+                    } else {
+                            let data = element.exportDataForDatabase();
+
+                            data.formId = formId;
+                            data.pageIndex = pageIndex++;
+                            data.groupId = 0;
+                            data.pageId = pageId;
+                            data.sectionIndex = i;
+
+                            let inputReq = await this.request("/api/input", "POST", JSON.stringify(data));
+
+                            inputs.push({id: element.id, uid: inputReq.insertId});
+                    }
+                }
+
+            }
+        }
+
+
+        let formUpdate = await this.request("/api/form", "PUT", JSON.stringify({
+            uid: formId,
+            active: false,
+            name: this.name,
+            csvOrder: this.convertRowsToCSV(inputs)
+        }))
+
+        let activateForm = await this.request("/api/form/activate/"+formId, "GET");
+
+        console.log(formUpdate);
+
+    }
+
+    convertRowsToCSV(inputs: {id: string, uid: number}[]): string {
+
+        let str = "";
+
+        let implicitCSVOptions: string[] = [ "user_id", "comp", "timestamp", "team_num", "user_name"];
+
+        for(let row of this.rows) {
+
+            if(implicitCSVOptions.indexOf(row.id) != -1) {
+                str+=row.id + ","
+            } else {
+                let input = inputs.find((val) => {
+                    console.log(val.id + "," + row.id)
+                    console.log(val.id == row.id);
+                    console.log(val);
+                    return val.id == row.id;
+                });
+    
+                str += input!.uid + ",";
+            }
+        }
+
+        str = str.substring(0, str.length-1);
+
+        return str;
+
+    }
+
+    allInputsValid(): boolean {
+
+        let previousIds: string[] = [];
+
+        for(let i = 0; i < this.pages.length; i++) {
+
+            let page = this.pages[i];
+
+            for(let j = 0; j < page.sections.length; j++) {
+
+                let section = page.sections[j];
+
+                for(let k = 0; k < section.elements.length; k++) {
+
+                    let element = section.elements[k];
+
+                    if(element instanceof Group) {
+                        
+                        for(let p = 0; p < element.inputs.length; p++) {
+
+                            let input = element.inputs[p];
+
+                            if(input.id == "" || previousIds.indexOf(input.id) != -1) {
+                                return false;
+                            } 
+                            previousIds.push(input.id)
+                        }
+
+                    } else {
+
+                        if(element.id == "" || previousIds.indexOf(element.id) != -1) {
+                            return false;
+                        } 
+                        previousIds.push(element.id)
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        return true;
     }
 
     convertInputsToRows(): Row[] {
@@ -43,14 +235,14 @@ export default class App {
 
                             let input = element.inputs[p];
 
-                            inputs.push({ index, id: input.id, type: typeof input.defaultValue})
+                            inputs.push({ index, id: input.id, type: (typeof input.defaultValue) || "pillbox"})
                             index += 1;
                             
                         }
 
                     } else {
 
-                        inputs.push({ index, id: element.questionText, type: typeof element.defaultValue});
+                        inputs.push({ index, id: element.id, type: (typeof element.defaultValue != "undefined") ? typeof element.defaultValue : "pillbox"});
                         index += 1;
 
                     }

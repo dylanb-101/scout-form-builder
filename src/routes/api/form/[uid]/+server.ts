@@ -11,7 +11,7 @@ class Form {
 
 export const GET: RequestHandler = async ({ params, url }) => {
 
-    const id = params.id;
+    const id = params.uid;
 
 
     let connection = poolConnection();

@@ -15,6 +15,17 @@
     app.addPage(new InputPage("Pre Match Info"))
 
     let state = $state("form-config")
+
+    function finishFormCreation() {
+
+        if(app.allInputsValid()) {
+            state = "export-config"
+        } else {
+            alert("all inputs need to have an id, and it needs to be unique!")
+        }
+
+
+    }
     
 
     
@@ -27,17 +38,6 @@
         <h1 class=" ml-4 text-4xl text-white">EGISC</h1>
     </div>
 
-<!-- pre match info  -->
-    <!-- <div class="w-11/12 h-40 bg-gray-500 rounded-lg p-4 text-white">
-        <h1 class="text-2xl">Pre-Match Info</h1>
-
-        <NewFormOption bind:checked={app.inputChecked} bind:type={app.inputTypeValue} confirm={() => {}} ></NewFormOption>
-        <br/>
-        <TextInput val={""} title={"Default Value:"}></TextInput>
-        <NumberInput val={0} title={"Default Value:"}></NumberInput>
-
-    </div> -->
-
     {#if state == "form-config"}
         
         {#each app.pages as page}
@@ -45,7 +45,7 @@
         {/each}
 
         <Button text="Add Page" click={() => {app.addPage(new InputPage("New Page"))}}></Button>
-        <Button text="Finish Form Creation" click={() => {state = "export-config"}}></Button>
+        <Button text="Finish Form Creation" click={() => {finishFormCreation()}}></Button>
 
     {:else if state == "export-config"}
 

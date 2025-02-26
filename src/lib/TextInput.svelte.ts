@@ -9,6 +9,18 @@ export default class TextInput extends Input {
     private _defaultValue: string = $state("");
     private _id: string = $state("");
 
+    public exportDataForDatabase() {
+        return {
+            inputType: "text",
+            required: this.required,
+            questionText: this.questionText,
+            helpText: this.helpText,
+            defaultValue: this.defaultValue,
+            cssId: this.id,
+            textLimit: this.limit
+        }
+    }
+
     get id(): string {
         return this._id;
     }
