@@ -28,9 +28,9 @@
     </div>
 
 
-    {#each page.sections as section}
+    {#each page.sections as section, i}
         <hr class="m-4"/>
-        <PageSectionDisplay section={section}></PageSectionDisplay>
+        <PageSectionDisplay section={section} destroy={() => {page.sections.splice(i, 1)}}></PageSectionDisplay>
     {/each}
 
     <Button text="Add Section" click={() => {page.addSection(new PageSection())}}></Button>

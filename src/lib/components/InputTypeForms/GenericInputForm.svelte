@@ -13,9 +13,10 @@
     import ToggleInputForm from "./ToggleInputForm.svelte";
     import PillboxInput from "$lib/PillboxInput.svelte";
     import PillboxInputForm from "./PillboxInputForm.svelte";
+    import Button from "../Button.svelte";
 
 
-    let { input }: { input: Input } = $props();
+    let { input, destroy }: { input: Input, destroy: () => void } = $props();
 
     // required: boolean;
     // questionText: string;
@@ -26,6 +27,7 @@
 
 <div class="flex flex-col">
 
+    <div><Button text={"X"} click={destroy}/></div>
     <TextInputComponent bind:val={input.questionText} title="Question Text:"></TextInputComponent>
     <TextInputComponent bind:val={input.helpText} title="Help Text:"></TextInputComponent>
     <TextInputComponent bind:val={input.id} title="Input ID:"></TextInputComponent>
