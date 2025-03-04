@@ -14,7 +14,7 @@ export function mysqlConnection() {
     if(!connection) {
 
         connection = mysql.createConnection({
-            database: CREDS.databse,
+            database: CREDS.database,
             host: CREDS.host,
             user: CREDS.user,
             password: CREDS.password
@@ -30,7 +30,7 @@ export function poolConnection(): mysql.Pool {
 
     if(!pool) {
         pool = mysql.createPool({
-            database: CREDS.databse,
+            database: CREDS.database,
             host: CREDS.host,
             user: CREDS.user,
             password: CREDS.password,
