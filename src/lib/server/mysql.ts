@@ -34,7 +34,8 @@ export function poolConnection(): mysql.Pool {
             host: CREDS.host,
             user: CREDS.user,
             password: CREDS.password,
-            connectionLimit: 20
+            connectionLimit: 20,
+            // idleTimeout: 60000*10
         });
     }
 

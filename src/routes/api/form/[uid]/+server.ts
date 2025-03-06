@@ -69,10 +69,10 @@ export const POST: RequestHandler = async ({ request }) => {
         return new Response(JSON.stringify({ error: "Form is not active" }));
     }
 
-    let id:any = data.uid;
+    let id: any = data.uid;
     //check if there does not exist a table titled form+uid (e.g. form1) then create it with the right header
     let [table] = await connection.query(`SHOW TABLES LIKE 'form${id}'`);
-    let t:any = JSON.parse(JSON.stringify(table));
+    let t: any = JSON.parse(JSON.stringify(table));
     if (t[0] == null || t[0] == undefined || Object.keys(t[0]).length == 0) {
         //make the header equal to the keys of data.submission
         let headers = Object.keys(data.submission);
