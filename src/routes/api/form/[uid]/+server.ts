@@ -73,10 +73,14 @@ export const POST: RequestHandler = async ({ request }) => {
     //check if there does not exist a table titled form+uid (e.g. form1) then create it with the right header
     let [table] = await connection.query(`SHOW TABLES LIKE 'form${id}'`);
     let t: any = JSON.parse(JSON.stringify(table));
+    let headers = Object.keys(data.submission);
+    headers = headers.map(header => header.replace(/[^a-zA-Z0-9_]/g, ""));
     if (t[0] == null || t[0] == undefined || Object.keys(t[0]).length == 0) {
         //make the header equal to the keys of data.submission
+
         let headers = Object.keys(data.submission);
         let query = `CREATE TABLE form${id} (id INT AUTO_INCREMENT PRIMARY KEY, ${headers.map(header => `\`${header}\`z VARCHAR(255)`).join(", ")})`;        console.log(query);
+
         let result: any;
         let fields: any;
         let req2 = await connection
@@ -104,7 +108,6 @@ export const POST: RequestHandler = async ({ request }) => {
     //if a table called form+uid exists (e.g. form1), and the headers match, insert data into it
     //otherwise, error
     let tableName = "form" + data.uid;
-    let headers = Object.keys(data.submission);
     let values = Object.values(data.submission);
     let query = `INSERT INTO ${tableName} (${headers.map(value => `\`${value}\``).join(",")}) VALUES (${values.map(value => `"${value}"`).join(",")})`;
     console.log(query);
@@ -116,6 +119,7 @@ export const POST: RequestHandler = async ({ request }) => {
         console.log("um smth should be happening correctly")
         result = rows;
         fields = fields;
+        console.log("SUCCESAKJHSGFKJAHSGDFLAKJSHD")
     }
     )
     .catch((e) => {

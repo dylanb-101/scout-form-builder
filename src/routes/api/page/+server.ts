@@ -6,6 +6,7 @@ export const GET: RequestHandler = async ({ url }) => {
     let limit = url.searchParams.get("limit") || 100;
     let uid = url.searchParams.get("uid");
     let formId = url.searchParams.get("form_id");
+    console.log(uid, formId);
 
     let connection = poolConnection();
 
