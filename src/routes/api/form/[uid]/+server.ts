@@ -76,7 +76,7 @@ export const POST: RequestHandler = async ({ request }) => {
     if (t[0] == null || t[0] == undefined || Object.keys(t[0]).length == 0) {
         //make the header equal to the keys of data.submission
         let headers = Object.keys(data.submission);
-        let query = `CREATE TABLE form${id} (id INT AUTO_INCREMENT PRIMARY KEY, ${headers.map(header => `${header} VARCHAR(255)`).join(", ")})`;        console.log(query);
+        let query = `CREATE TABLE form${id} (id INT AUTO_INCREMENT PRIMARY KEY, ${headers.map(header => `\`${header}\`z VARCHAR(255)`).join(", ")})`;        console.log(query);
         let result: any;
         let fields: any;
         let req2 = await connection
@@ -84,14 +84,14 @@ export const POST: RequestHandler = async ({ request }) => {
         .then(([rows, fields]) => {
             result = rows;
             fields = fields;
+
         }
         )
         .catch((e) => {
-            error(e);
-        })
-        console.log(result);
-        console.log(fields);
 
+            console.log(e);
+            error(501, e);
+        })
 
     }
     
@@ -106,32 +106,29 @@ export const POST: RequestHandler = async ({ request }) => {
     let tableName = "form" + data.uid;
     let headers = Object.keys(data.submission);
     let values = Object.values(data.submission);
-    let query = `INSERT INTO ${tableName} (${headers.join(",")}) VALUES (${values.map(value => `"${value}"`).join(",")})`;
+    let query = `INSERT INTO ${tableName} (${headers.map(value => `\`${value}\``).join(",")}) VALUES (${values.map(value => `"${value}"`).join(",")})`;
     console.log(query);
     let result: any;
     let fields: any;
     let req2 = await connection
     .query(query)
     .then(([rows, fields]) => {
+        console.log("um smth should be happening correctly")
         result = rows;
         fields = fields;
     }
     )
     .catch((e) => {
-        error(e);
+        console.log("bad")
+        console.log(e)
+        error(501, e);
     })
     console.log(result);
     console.log(fields);
     if(result.affectedRows == 0) {
         return new Response(JSON.stringify({ error: "Form not found" }));
     }
-
     
-    
-
-
-
-
     return new Response(JSON.stringify({ uid: res[0].uid }));
 
 
